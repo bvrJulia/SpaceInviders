@@ -14,7 +14,8 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: qlineargradient(spread:pad, x1:0.129, y1:0.943182, x2:0.97, y2:0.187727, stop:0.05 rgba(22, 12, 113, 255), stop:0.272277 rgba(28, 17, 145, 255), stop:0.668317 rgba(178, 0, 178, 255), stop:0.79 rgba(216, 72, 216, 255), stop:0.89604 rgba(211, 114, 211, 255), stop:0.990099 rgba(221, 183, 221, 255));</string>
+   <string notr="true">/*background-color: qlineargradient(spread:repeat, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 85, 127, 255), stop:1 rgba(170, 0, 255, 255));*/
+background-color: rgb(0, 0, 0);</string>
   </property>
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
@@ -24,6 +25,10 @@
      <width>51</width>
      <height>51</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);
+font: 12pt &quot;MS Gothic&quot;;</string>
    </property>
    <property name="text">
     <string>Menu</string>

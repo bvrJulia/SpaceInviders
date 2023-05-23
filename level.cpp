@@ -3,7 +3,7 @@
 Level::Level(int lvl){
     if (lvl == 1){
         periodOfShots_ = 1000;
-        periodOfMove_ = 7000;
+        periodOfMove_ = 700;
         Monstr mon1(QPoint(25, 100));
         Monstr mon2(QPoint(75, 100));
         Monstr mon3(QPoint(125, 100));
@@ -21,7 +21,7 @@ Level::Level(int lvl){
         monstrs_ = QVector<Monstr>{mon1,mon2,mon3,mon4,mon5,mon6,mon7, mon8,mon9,mon10,mon11,mon12,mon13,mon14};
     }else if (lvl == 2){
         periodOfShots_ = 700;
-        periodOfMove_ = 5000;
+        periodOfMove_ = 500;
         Monstr mon1(QPoint(25, 100));
         Monstr mon2(QPoint(75, 100),2);
         Monstr mon3(QPoint(125, 100));
@@ -40,7 +40,7 @@ Level::Level(int lvl){
     }
     else if (lvl == 3){
         periodOfShots_ = 650;
-        periodOfMove_ = 5000;
+        periodOfMove_ = 500;
         Monstr mon1(QPoint(25, 100));
         Monstr mon2(QPoint(75, 100));
         Monstr mon3(QPoint(125, 100));
@@ -73,7 +73,7 @@ Level::Level(int lvl){
                 mon14,mon15,mon16,mon17,mon18,mon19,mon20,mon21, mon22,mon23,mon24,mon25,mon26,mon27,mon28};
     }else if (lvl == 4){
         periodOfShots_ = 650;
-        periodOfMove_ = 5500;
+        periodOfMove_ = 550;
         Monstr mon1(QPoint(25, 100),2);
         Monstr mon2(QPoint(75, 100));
         Monstr mon3(QPoint(125, 100));
@@ -106,7 +106,7 @@ Level::Level(int lvl){
                 mon14,mon15,mon16,mon17,mon18,mon19,mon20,mon21, mon22,mon23,mon24,mon25,mon26,mon27,mon28};
     }else if (lvl == 5){
         periodOfShots_ = 500;
-        periodOfMove_ = 6500;
+        periodOfMove_ = 650;
         Monstr mon1(QPoint(25, 100),2);
         Monstr mon2(QPoint(75, 100),2);
         Monstr mon3(QPoint(125, 100));
@@ -154,7 +154,7 @@ Level::Level(int lvl){
                 mon29,mon30,mon31,mon32,mon33,mon34,mon35,mon36,mon37, mon38,mon39,mon40,mon41,mon42};
     }
 }
-/*
+
 Level::Level(QString lvl){
     QFile fileJson(lvl);
 
@@ -169,14 +169,17 @@ Level::Level(QString lvl){
     periodOfShots_ = json["Shot"].toInt();
     periodOfMove_ = json["Move"].toInt();
     bool b1 = true;
-    QString ms = "Mon1";
+    QString ms = "Mon01";
     int itr = 1;
     QString res = "";
     while (b1){
         mon = json[ms].toString();
         if (mon!=""){
-            ms.resize(ms.size() - 1);
+            ms.resize(ms.size() - 2);
             itr++;
+            if(itr<10){
+                ms.push_back(QString::number(0));
+            }
             ms.push_back(QString::number(itr));
             res.push_back(mon);
             res.push_back(",");
@@ -203,4 +206,4 @@ Level::Level(QString lvl){
     }
     fileJson.close();
 
-}*/
+}
