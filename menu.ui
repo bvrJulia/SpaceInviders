@@ -14,20 +14,60 @@
    <string>Menu</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: qlineargradient(spread:pad, x1:0.282178, y1:0.028, x2:0.767, y2:0.943, stop:0 rgba(170, 0, 255, 255), stop:1 rgba(0, 170, 255, 255));</string>
+   <string notr="true">/*background-color: qlineargradient(spread:pad, x1:0.282178, y1:0.028, x2:0.767, y2:0.943, stop:0 rgba(170, 0, 255, 255), stop:1 rgba(0, 170, 255, 255));*/
+background-image: url(:/images/sky.png);</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>140</x>
       <y>80</y>
-      <width>431</width>
+      <width>411</width>
       <height>51</height>
      </rect>
     </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+font: 12pt &quot;MS Gothic&quot;;
+</string>
+    </property>
     <property name="text">
      <string>Start game</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>180</y>
+      <width>411</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);
+image: url(:/images/sky.png);
+font: 12pt &quot;MS Gothic&quot;;
+color: rgb(255, 255, 255);</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>142</x>
+      <y>290</y>
+      <width>411</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);
+font: 12pt &quot;MS Gothic&quot;;
+</string>
+    </property>
+    <property name="text">
+     <string>Make level</string>
     </property>
    </widget>
   </widget>

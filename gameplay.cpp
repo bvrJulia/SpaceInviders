@@ -11,15 +11,37 @@ GamePlay::GamePlay(QWidget *parent) :
     timer = new QTimer(this);
 
     lvl = 1;
+    if (user_lvl ==-1){
+        this->setWindowTitle("1 level");
+    } else if(user_lvl==0){
+        this->setWindowTitle("User level");
+    }else{
+        this->setWindowTitle(QString::number(user_lvl)+" level");
+    }
     connect(timer, SIGNAL(timeout()), this, SLOT(on_timeout()));
 
-
+    images = new QVector<QImage>{QImage(":/images/mon1.png"),QImage(":/images/mon3.png"),
+            QImage(":/images/mon4.png"),QImage(":/images/shot.png"),QImage(":/images/player.png"),QImage(":/images/live.png")};
+    m_player = new QMediaPlayer();
+    m_playlist = new QMediaPlaylist(m_player);
+    m_player->setPlaylist(m_playlist);
+    m_playlist->addMedia(QUrl("qrc:/sounds/shot.mp3"));
+    m_music = new QMediaPlayer();
+    m_musiclist = new QMediaPlaylist(m_music);
+    m_music->setPlaylist(m_musiclist);
+    m_musiclist->addMedia(QUrl("qrc:/sounds/hyperspace.mp3"));
+    m_musiclist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 
 }
 
 void GamePlay::start(){
     timer->start(50);
-    control = new Controller(lvl);
+    if (user_lvl ==-1){
+        control = new Controller(lvl);
+    } else {
+        control = new Controller(user_lvl);
+    }
+    m_music->play();
 }
 
 GamePlay::~GamePlay()
@@ -27,8 +49,13 @@ GamePlay::~GamePlay()
     delete ui;
 }
 
+void GamePlay::setUserLvl(int levl){
+    user_lvl=levl;
+}
+
 void GamePlay::on_pushButton_clicked()
 {
+    m_music->stop();
     timer->stop();
     this->close();  // Закрываем окно
     delete control;
@@ -62,18 +89,15 @@ void GamePlay::paintEvent(QPaintEvent *){
                 point.setY(control->getMonstrs()[i].getEndPlace().y());
             }
         }
-        if (control->getMonstrs()[i].getLives()==1){
-            painter.setPen(QPen(QBrush(QColor(200,0,180)), 3));
-            painter.setBrush(QBrush(QColor(200,0,180)));
-        } else if (control->getMonstrs()[i].getLives()==2){
-            painter.setPen(QPen(QBrush(QColor(200,0,100)), 3));
-            painter.setBrush(QBrush(QColor(200,0,100)));
-        }else if (control->getMonstrs()[i].getLives()==3){
-            painter.setPen(QPen(QBrush(QColor(200,0,0)), 3));
-            painter.setBrush(QBrush(QColor(200,0,0)));
-        }
         control->setMonstrPlace(i, point);
-        painter.drawEllipse(point.x()-20,point.y()-20,40,40);
+        if (control->getMonstrs()[i].getLives()==1){
+            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(0));
+        } else if (control->getMonstrs()[i].getLives()==2){
+            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(1));
+        }else if (control->getMonstrs()[i].getLives()==3){
+            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(2));
+        }
+
     }
     painter.setPen(QPen(QBrush(QColor(200,0,0)), 3));
     painter.setBrush(QBrush(QColor(200,0,0)));
@@ -91,7 +115,7 @@ void GamePlay::paintEvent(QPaintEvent *){
             }
         }
         control->setShotPlace(i, point);
-        painter.drawEllipse(point.x()-5,point.y()-5,10,10);
+        painter.drawImage(QRect(point.x()-3,point.y()-7,6,14),images->at(3));
     }
     painter.setPen(QPen(QBrush(QColor(0,200,0)), 3));
     painter.setBrush(QBrush(QColor(0,200,0)));
@@ -109,21 +133,22 @@ void GamePlay::paintEvent(QPaintEvent *){
         }
     }
     control->setPlayerPlace(point);
-    painter.drawRect(point.x()-20,point.y()-20,40,40);
+    painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(4));
     if (control->getPlayer().getLives()>0){
-        painter.drawEllipse(660, 10, 30, 30);
+        painter.drawImage(QRect(660, 10, 40, 30),images->at(5));
     }
     if (control->getPlayer().getLives()>1){
-        painter.drawEllipse(620, 10, 30, 30);
+        painter.drawImage(QRect(620, 10, 40, 30),images->at(5));
     }
     if (control->getPlayer().getLives()>2){
-        painter.drawEllipse(580, 10, 30, 30);
+        painter.drawImage(QRect(580, 10, 40, 30),images->at(5));
     }
 
 }
 
 void GamePlay::lvl_changed(){
     lvl++;
+    this->setWindowTitle(QString::number(lvl)+" level");
     timer->stop();
     delete control;
     start();
@@ -149,7 +174,7 @@ void GamePlay::on_timeout(){
         QPushButton* bt = new QPushButton("Menu");
         message->addButton(bt, QMessageBox::ActionRole);
         connect(bt, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
-        if (lvl<5){
+        if (lvl<5 && user_lvl==-1){
             QPushButton* bt1 = new QPushButton("Continue");
             message->addButton(bt1, QMessageBox::ActionRole);
             connect(bt1, SIGNAL(clicked()), this, SLOT(lvl_changed()));
@@ -179,10 +204,13 @@ void GamePlay::keyPressEvent(QKeyEvent *e){
         control->setPlayerEndPlace(place);
     }
     if (e->key()==Qt::Key_E){
-        Shot shot;
-        shot.setOwner(false);
-        shot.setPlace(place);
-        shot.setEndPlace(QPoint(place.y(),0));
-        control->addShot(shot);
+        if (control->getTime()%100 == 0){ // time limit for shots???
+            Shot shot;
+            shot.setOwner(false);
+            shot.setPlace(place);
+            shot.setEndPlace(QPoint(place.y(),0));
+            control->addShot(shot);
+            m_player->play();
+        }
     }
 }

@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/sky.png</file>
+        <file>images/mon1.png</file>
+        <file>images/mon2.png</file>
+        <file>images/mon3.png</file>
+        <file>images/mon4.png</file>
+        <file>images/player.png</file>
+        <file>images/sky1.jpg</file>
+        <file>images/icon.png</file>
+        <file>images/shot.png</file>
+        <file>images/live.png</file>
+        <file>levels/1.json</file>
+        <file>levels/2.json</file>
+        <file>levels/3.json</file>
+        <file>levels/4.json</file>
+        <file>levels/5.json</file>
+        <file>sounds/shot.mp3</file>
+        <file>sounds/yehat.mp3</file>
+        <file>sounds/hyperspace.mp3</file>
+        <file>levels/0.json</file>
+    </qresource>
+</RCC>

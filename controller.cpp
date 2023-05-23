@@ -1,14 +1,16 @@
 #include "controller.h"
+#include <QSound>
 #include <QRandomGenerator>
 
 Controller::Controller(int lvl)
 {
-    lvl_ = new Level(lvl);
+    lvl_ = new Level(":/levels/"+QString::number(lvl)+".json");
     monstrs_=lvl_->getMonstrs();
     play_.setPlace(QPoint(350, 850));
     play_.setEndPlace(QPoint(350, 850));
     play_.setLives(3);
     time_ = 0;
+
 }
 
 void Controller::generateShot(){
@@ -79,8 +81,21 @@ void Controller::timeout(){
     }
     if (time_ % lvl_->getMovePeriod() == 0){
         for (int i = 0; i <monstrs_.size(); i++){
-            QPoint newPlace = QPoint(monstrs_[i].getPlace().x(),monstrs_[i].getPlace().y()+100);
-            monstrs_[i].setEndPlace(newPlace);
+            if (monstrs_[i].getPlace().x()==25 && monstrs_[i].getPlace().y()%100!=0){
+                QPoint newPlace = QPoint(monstrs_[i].getPlace().x(),monstrs_[i].getPlace().y()+50);
+                monstrs_[i].setEndPlace(newPlace);
+            }else if (monstrs_[i].getPlace().x()==675 && monstrs_[i].getPlace().y()%100==0){
+                QPoint newPlace = QPoint(monstrs_[i].getPlace().x(),monstrs_[i].getPlace().y()+50);
+                monstrs_[i].setEndPlace(newPlace);
+            }else if(monstrs_[i].getPlace().y()%100==0){
+                QPoint newPlace = QPoint(monstrs_[i].getPlace().x()+50,monstrs_[i].getPlace().y());
+                monstrs_[i].setEndPlace(newPlace);
+            }else{
+                QPoint newPlace = QPoint(monstrs_[i].getPlace().x()-50,monstrs_[i].getPlace().y());
+                monstrs_[i].setEndPlace(newPlace);
+            }
+            /*QPoint newPlace = QPoint(monstrs_[i].getPlace().x(),monstrs_[i].getPlace().y()+100);
+            monstrs_[i].setEndPlace(newPlace);*/
         }
     }
     int i = 0;

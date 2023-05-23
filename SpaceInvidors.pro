@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia
 
 CONFIG += c++17
 
@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     controller.cpp \
     creature.cpp \
+    gamedesighn.cpp \
     gameplay.cpp \
     level.cpp \
     main.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 HEADERS += \
     controller.h \
     creature.h \
+    gamedesighn.h \
     gameplay.h \
     level.h \
     menu.h \
@@ -30,6 +32,7 @@ HEADERS += \
     shot.h
 
 FORMS += \
+    gamedesighn.ui \
     gameplay.ui \
     menu.ui
 
@@ -41,4 +44,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 DISTFILES +=
 
 RESOURCES += \
-    sky.qrc
+    resourse.qrc

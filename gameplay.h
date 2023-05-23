@@ -7,6 +7,9 @@
 #include "controller.h"
 #include <QTimer>
 #include <QMessageBox>
+#include <QSound>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 namespace Ui {
 class GamePlay;
@@ -20,6 +23,7 @@ public:
     explicit GamePlay(QWidget *parent = nullptr);
     ~GamePlay();
     void start();
+    void setUserLvl(int levl);
 signals:
     void firstWindow();
 private:
@@ -27,8 +31,14 @@ private:
     Controller* control;
     QTimer* timer;
     int lvl;
+    int user_lvl = -1;
+    QVector<QImage>* images;
+
+    QMediaPlayer * m_player;
+    QMediaPlaylist * m_playlist;
+    QMediaPlayer * m_music;
+    QMediaPlaylist * m_musiclist;
 private slots:
-    // Слот-обработчик нажатия кнопки
     void on_pushButton_clicked();
     void on_timeout();
     void lvl_changed();
