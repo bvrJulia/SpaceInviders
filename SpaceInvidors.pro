@@ -12,6 +12,7 @@ SOURCES += \
     controller.cpp \
     creature.cpp \
     gamedesighn.cpp \
+    gamepause.cpp \
     gameplay.cpp \
     level.cpp \
     main.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     controller.h \
     creature.h \
     gamedesighn.h \
+    gamepause.h \
     gameplay.h \
     level.h \
     menu.h \
@@ -33,6 +35,7 @@ HEADERS += \
 
 FORMS += \
     gamedesighn.ui \
+    gamepause.ui \
     gameplay.ui \
     menu.ui
 

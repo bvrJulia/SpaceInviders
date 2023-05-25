@@ -2,9 +2,10 @@
 #include <QSound>
 #include <QRandomGenerator>
 
-Controller::Controller(int lvl)
+Controller::Controller(QString lvl)
 {
-    lvl_ = new Level(":/levels/"+QString::number(lvl)+".json");
+    //lvl_ = new Level(":/levels/"+QString::number(lvl)+".json");
+    lvl_ = new Level(lvl);
     monstrs_=lvl_->getMonstrs();
     play_.setPlace(QPoint(350, 850));
     play_.setEndPlace(QPoint(350, 850));
@@ -31,7 +32,7 @@ int Controller::endOfLevel(){
             return -1;
         }
     }
-    if (play_.getLives() == 0){
+    if (play_.getLives() < 1){
         return -1;
     } else if (monstrs_.empty()){
         return 1;

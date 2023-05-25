@@ -18,6 +18,7 @@
         <file>sounds/shot.mp3</file>
         <file>sounds/yehat.mp3</file>
         <file>sounds/hyperspace.mp3</file>
-        <file>levels/0.json</file>
+        <file>images/mon5.png</file>
+        <file>images/design.png</file>
     </qresource>
 </RCC>

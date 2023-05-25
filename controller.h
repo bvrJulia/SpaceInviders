@@ -10,7 +10,7 @@
 class Controller
 {
 public:
-    Controller(int lvl);
+    Controller(QString lvl);
     void generateShot();
     void addShot(Shot shot);
     int endOfLevel();
