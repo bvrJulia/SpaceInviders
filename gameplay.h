@@ -10,6 +10,7 @@
 #include <QSound>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+//#include "gameend.h"
 
 namespace Ui {
 class GamePlay;
@@ -38,10 +39,14 @@ private:
     QMediaPlaylist * m_playlist;
     QMediaPlayer * m_music;
     QMediaPlaylist * m_musiclist;
+    bool pause = false;
+    //gameEnd * gEnd;
 private slots:
     void on_pushButton_clicked();
     void on_timeout();
     void lvl_changed();
+    void on_pushButton_2_clicked();
+
 protected:
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent *);

@@ -20,8 +20,9 @@ GamePlay::GamePlay(QWidget *parent) :
     }
     connect(timer, SIGNAL(timeout()), this, SLOT(on_timeout()));
 
-    images = new QVector<QImage>{QImage(":/images/mon1.png"),QImage(":/images/mon3.png"),
-            QImage(":/images/mon4.png"),QImage(":/images/shot.png"),QImage(":/images/player.png"),QImage(":/images/live.png")};
+    images = new QVector<QImage>{QImage(":/images/mon1.png"),QImage(":/images/mon2.png"),QImage(":/images/mon3.png"),
+            QImage(":/images/mon4.png"), QImage(":/images/mon5.png"),QImage(":/images/shot.png"),
+            QImage(":/images/player.png"),QImage(":/images/live.png")};
     m_player = new QMediaPlayer();
     m_playlist = new QMediaPlaylist(m_player);
     m_player->setPlaylist(m_playlist);
@@ -31,15 +32,18 @@ GamePlay::GamePlay(QWidget *parent) :
     m_music->setPlaylist(m_musiclist);
     m_musiclist->addMedia(QUrl("qrc:/sounds/hyperspace.mp3"));
     m_musiclist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    //gEnd = new gameEnd();
 
 }
 
 void GamePlay::start(){
     timer->start(50);
     if (user_lvl ==-1){
-        control = new Controller(lvl);
-    } else {
-        control = new Controller(user_lvl);
+        control = new Controller(":/levels/"+QString::number(lvl)+".json");
+    } else if (user_lvl ==0){
+        control = new Controller("../SpaceInvidors/levels/0.json");
+    }else{
+        control = new Controller(":/levels/"+QString::number(user_lvl)+".json");
     }
     m_music->play();
 }
@@ -59,7 +63,7 @@ void GamePlay::on_pushButton_clicked()
     timer->stop();
     this->close();  // Закрываем окно
     delete control;
-    emit firstWindow(); // И вызываем сигнал на открытие главного окна
+    emit firstWindow(); // И вызываем сигнал на открытие главного окна*/
 }
 
 void GamePlay::paintEvent(QPaintEvent *){
@@ -96,6 +100,10 @@ void GamePlay::paintEvent(QPaintEvent *){
             painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(1));
         }else if (control->getMonstrs()[i].getLives()==3){
             painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(2));
+        } else if (control->getMonstrs()[i].getLives()==4){
+            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(3));
+        }else if (control->getMonstrs()[i].getLives()==5){
+            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(4));
         }
 
     }
@@ -115,7 +123,7 @@ void GamePlay::paintEvent(QPaintEvent *){
             }
         }
         control->setShotPlace(i, point);
-        painter.drawImage(QRect(point.x()-3,point.y()-7,6,14),images->at(3));
+        painter.drawImage(QRect(point.x()-3,point.y()-7,6,14),images->at(5));
     }
     painter.setPen(QPen(QBrush(QColor(0,200,0)), 3));
     painter.setBrush(QBrush(QColor(0,200,0)));
@@ -133,15 +141,15 @@ void GamePlay::paintEvent(QPaintEvent *){
         }
     }
     control->setPlayerPlace(point);
-    painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(4));
+    painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(6));
     if (control->getPlayer().getLives()>0){
-        painter.drawImage(QRect(660, 10, 40, 30),images->at(5));
+        painter.drawImage(QRect(660, 10, 40, 30),images->at(7));
     }
     if (control->getPlayer().getLives()>1){
-        painter.drawImage(QRect(620, 10, 40, 30),images->at(5));
+        painter.drawImage(QRect(620, 10, 40, 30),images->at(7));
     }
     if (control->getPlayer().getLives()>2){
-        painter.drawImage(QRect(580, 10, 40, 30),images->at(5));
+        painter.drawImage(QRect(580, 10, 40, 30),images->at(7));
     }
 
 }
@@ -182,6 +190,7 @@ void GamePlay::on_timeout(){
             message->setWindowTitle("End of game!");
         }
         message->setVisible(true);
+        //gEnd->show();
     } else{
         repaint();
     }
@@ -214,3 +223,15 @@ void GamePlay::keyPressEvent(QKeyEvent *e){
         }
     }
 }
+
+void GamePlay::on_pushButton_2_clicked()
+{
+    if (pause == false){
+        timer->stop();
+        pause = true;
+    } else{
+        timer->start();
+        pause = false;
+    }
+}
+
