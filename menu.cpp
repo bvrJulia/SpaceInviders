@@ -31,9 +31,16 @@ Menu::~Menu()
 
 void Menu::on_pushButton_clicked()
 {
-    gWindow->start();
-    gWindow->show();
-    this->close();
+    QString str = QCoreApplication::applicationDirPath()+"/levels/0.json";
+    QFile file(str);
+    if (ui->comboBox->currentIndex()!=6 || file.exists()){
+        gWindow->start();
+        gWindow->show();
+        this->close();
+    }else{
+        QErrorMessage* mes = new QErrorMessage;
+        mes->showMessage("User level data not founded. Use designer first!");
+    }
 }
 
 

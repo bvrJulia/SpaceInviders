@@ -5,6 +5,7 @@
 #include "gameplay.h"
 #include <QIcon>
 #include "gamedesighn.h"
+#include <QErrorMessage>
 
 namespace Ui { class Menu; }
 

@@ -51,7 +51,7 @@ void GamePlay::start(){
     if (user_lvl ==-1){
         control = new Controller(":/levels/"+QString::number(lvl)+".json");
     } else if (user_lvl ==0){
-        control = new Controller("../SpaceInvidors/levels/0.json");
+        control = new Controller(QCoreApplication::applicationDirPath()+"/levels/0.json");
     }else{
         control = new Controller(":/levels/"+QString::number(user_lvl)+".json");
     }
