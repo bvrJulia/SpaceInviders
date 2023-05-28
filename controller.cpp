@@ -15,8 +15,24 @@ Controller::Controller(QString lvl)
 }
 
 void Controller::generateShot(){
-    double a= QRandomGenerator::global()->generateDouble();
-    int num = a*monstrs_.size();
+    int num;
+
+    if (!lvl_->getHard()){
+        double a= QRandomGenerator::global()->generateDouble();
+        num = a*monstrs_.size();
+    }else{
+        num = 0;
+        for(int i = 1; i<monstrs_.size();i++){
+            int minDist = sqrt((monstrs_[num].getPlace().x() - play_.getPlace().x())*(monstrs_[num].getPlace().x() - play_.getPlace().x())+
+                               (monstrs_[num].getPlace().y() - play_.getPlace().y())*(monstrs_[num].getPlace().y() - play_.getPlace().y()));
+            int currrentDist = sqrt((monstrs_[i].getPlace().x() - play_.getPlace().x())*(monstrs_[i].getPlace().x() - play_.getPlace().x())+
+                               (monstrs_[i].getPlace().y() - play_.getPlace().y())*(monstrs_[i].getPlace().y() - play_.getPlace().y()));
+            if(currrentDist<minDist){
+                num = i;
+            }
+        }
+
+    }
     Shot newShot;
     newShot.setOwner(true);
     newShot.setPlace(monstrs_[num].getPlace());

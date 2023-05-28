@@ -205,5 +205,10 @@ Level::Level(QString lvl){
         monstrs_.push_back(Monstr(QPoint(monNums[i], monNums[i+1]), monNums[i+2]));
     }
     fileJson.close();
-
+    for(int i = 0; i<monstrs_.size();i++){
+        if(monstrs_[i].getLives()==5){
+            hard_=true;
+            i = monstrs_.size();
+        }
+    }
 }

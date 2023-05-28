@@ -20,5 +20,11 @@
         <file>sounds/hyperspace.mp3</file>
         <file>images/mon5.png</file>
         <file>images/design.png</file>
+        <file>images/mon1.2.png</file>
+        <file>images/mon2.2.png</file>
+        <file>images/mon3.2.png</file>
+        <file>images/mon4.2.png</file>
+        <file>images/mon5.2.png</file>
+        <file>images/pause.png</file>
     </qresource>
 </RCC>
