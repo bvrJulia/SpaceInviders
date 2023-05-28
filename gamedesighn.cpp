@@ -169,11 +169,14 @@ void GameDesighn::paintEvent(QPaintEvent *){
         }
     }
 }
-void GameDesighn::mousePressEvent(QMouseEvent  *){
-    QPoint mouse = QCursor::pos();
+void GameDesighn::mousePressEvent(QMouseEvent  *e){
+    //QPoint mouse = this->mapFromParent(e->pos());
+    QPoint mouse = e->pos();
+    mouse.setY(mouse.y()+30);
     if (button!=0){
         if (findMon(mouse)==-1){
-            mouse.setX(mouse.x()-627);
+
+            //mouse.setX(mouse.x()-627);
             if (mouse.x()>0 && mouse.x()<700 &&mouse.y()>600 && mouse.y()<850){
                 mouse.setX((mouse.x()/50)*50+25);
                 mouse.setY((mouse.y()/50)*50-25);
@@ -191,7 +194,6 @@ void GameDesighn::mousePressEvent(QMouseEvent  *){
 }
 
 int GameDesighn::findMon(QPoint po){
-    po.setX(po.x()-627);
     po.setX((po.x()/50)*50+25);
     po.setY((po.y()/50)*50-25);
     for (int i = 1; i < mons->size(); i++){
