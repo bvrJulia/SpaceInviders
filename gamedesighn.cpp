@@ -37,10 +37,19 @@ void GameDesighn::start(){
     m_music->play();
 }
 
+QString GameDesighn::checkPath(){
+    QString str = QCoreApplication::applicationDirPath()+"/levels/";
+    QDir dir(str);
+    if (!dir.exists()){
+        dir.mkpath(str);
+    }
+    return (str);
+}
+
 void GameDesighn::on_pushButton_2_clicked()
 {
     if (mons->size()!=1){
-        QFile fileJson("../SpaceInvidors/levels/0.json");
+        QFile fileJson(checkPath()+"0.json");
 
         fileJson.open(QIODevice::WriteOnly);
         QVariantMap testMap;

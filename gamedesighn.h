@@ -11,6 +11,7 @@
 #include <QPainter>
 #include <QVector>
 #include "monstr.h"
+#include <QDir>
 namespace Ui {
 class GameDesighn;
 }
@@ -32,6 +33,7 @@ private:
     QVector<Monstr>* mons;
     QVector<QImage>* images;
     int findMon(QPoint po);
+    QString checkPath();
 signals:
     void firstWindow();
 
