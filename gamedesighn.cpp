@@ -6,6 +6,7 @@ GameDesighn::GameDesighn(QWidget *parent) :
     ui(new Ui::GameDesighn)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint);
     setFixedSize(700, 900);
     m_music = new QMediaPlayer();
     m_musiclist = new QMediaPlaylist(m_music);
@@ -16,6 +17,8 @@ GameDesighn::GameDesighn(QWidget *parent) :
     mons = new QVector<Monstr>({mon});
     images = new QVector<QImage>{QImage(":/images/mon1.png"),QImage(":/images/mon2.png"),QImage(":/images/mon3.png"),
             QImage(":/images/mon4.png"), QImage(":/images/mon5.png")};
+    ui->spinBox->setFocusPolicy(Qt::NoFocus);
+    ui->spinBox_2->setFocusPolicy(Qt::NoFocus);
 }
 
 GameDesighn::~GameDesighn()

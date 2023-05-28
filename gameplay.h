@@ -10,7 +10,8 @@
 #include <QSound>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-//#include "gameend.h"
+#include "gameend.h"
+#include "gamepause.h"
 
 namespace Ui {
 class GamePlay;
@@ -40,7 +41,10 @@ private:
     QMediaPlayer * m_music;
     QMediaPlaylist * m_musiclist;
     bool pause = false;
-    //gameEnd * gEnd;
+    int time =0;
+    GameEnd * gEnd;
+    GamePause* gPause;
+    bool win = true;
 private slots:
     void on_pushButton_clicked();
     void on_timeout();

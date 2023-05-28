@@ -6,6 +6,7 @@ GamePlay::GamePlay(QWidget *parent) :
     ui(new Ui::GamePlay)
 {
     ui->setupUi(this);
+    setWindowFlags(Qt::FramelessWindowHint);
     setFixedSize(700, 900);
 
     timer = new QTimer(this);
@@ -22,7 +23,8 @@ GamePlay::GamePlay(QWidget *parent) :
 
     images = new QVector<QImage>{QImage(":/images/mon1.png"),QImage(":/images/mon2.png"),QImage(":/images/mon3.png"),
             QImage(":/images/mon4.png"), QImage(":/images/mon5.png"),QImage(":/images/shot.png"),
-            QImage(":/images/player.png"),QImage(":/images/live.png")};
+            QImage(":/images/player.png"),QImage(":/images/live.png"),QImage(":/images/mon1.2.png"),QImage(":/images/mon2.2.png"),
+            QImage(":/images/mon3.2.png"), QImage(":/images/mon4.2.png"), QImage(":/images/mon5.2.png")};
     m_player = new QMediaPlayer();
     m_playlist = new QMediaPlaylist(m_player);
     m_player->setPlaylist(m_playlist);
@@ -32,8 +34,16 @@ GamePlay::GamePlay(QWidget *parent) :
     m_music->setPlaylist(m_musiclist);
     m_musiclist->addMedia(QUrl("qrc:/sounds/hyperspace.mp3"));
     m_musiclist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
-    //gEnd = new gameEnd();
-
+    gEnd = new GameEnd();
+    gEnd->setWindowTitle("End of level!");
+    connect(gEnd, &GameEnd::menu, this, &GamePlay::on_pushButton_clicked);
+    connect(gEnd, &GameEnd::next, this, &GamePlay::lvl_changed);
+    gPause = new GamePause();
+    gPause->setWindowTitle("Pause");
+    connect(gPause, &GamePause::menu, this, &GamePlay::on_pushButton_clicked);
+    connect(gPause, &GamePause::cont, this, &GamePlay::on_pushButton_2_clicked);
+    ui->pushButton->setFocusPolicy(Qt::NoFocus);
+    ui->pushButton_2->setFocusPolicy(Qt::NoFocus);
 }
 
 void GamePlay::start(){
@@ -94,16 +104,37 @@ void GamePlay::paintEvent(QPaintEvent *){
             }
         }
         control->setMonstrPlace(i, point);
+        bool pic = (time >= 10);
         if (control->getMonstrs()[i].getLives()==1){
-            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(0));
+            if (pic){
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(0));
+            }else{
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(8));
+            }
         } else if (control->getMonstrs()[i].getLives()==2){
-            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(1));
+            if (pic){
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(1));
+            }else{
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(9));
+            }
         }else if (control->getMonstrs()[i].getLives()==3){
-            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(2));
+            if (pic){
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(2));
+            }else{
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(10));
+            }
         } else if (control->getMonstrs()[i].getLives()==4){
-            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(3));
+            if (pic){
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(3));
+            }else{
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(11));
+            }
         }else if (control->getMonstrs()[i].getLives()==5){
-            painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(4));
+            if (pic){
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(4));
+            }else{
+                painter.drawImage(QRect(point.x()-20,point.y()-20,40,40),images->at(12));
+            }
         }
 
     }
@@ -155,15 +186,20 @@ void GamePlay::paintEvent(QPaintEvent *){
 }
 
 void GamePlay::lvl_changed(){
-    lvl++;
-    this->setWindowTitle(QString::number(lvl)+" level");
+    if (win && user_lvl == -1 && lvl<5){
+        lvl++;
+    }
     timer->stop();
     delete control;
     start();
 }
 
 void GamePlay::on_timeout(){
-    control->timeout();
+    if (time == 20){
+        time =0;
+    }
+    time+=1;
+    control->timeout();/*
     if (control->endOfLevel()==-1){
         timer->stop();
         QMessageBox* message = new QMessageBox();
@@ -190,7 +226,20 @@ void GamePlay::on_timeout(){
             message->setWindowTitle("End of game!");
         }
         message->setVisible(true);
-        //gEnd->show();
+    } else{
+        repaint();
+    }*/
+    if (control->endOfLevel()==-1){
+        win = false;
+        timer->stop();
+        gEnd->changeText("You are loser");
+        gEnd->show();
+
+    } else if (control->endOfLevel()==1){
+        win =true;
+        timer->stop();
+        gEnd->changeText("You are winner");
+        gEnd->show();
     } else{
         repaint();
     }
@@ -198,22 +247,22 @@ void GamePlay::on_timeout(){
 
 void GamePlay::keyPressEvent(QKeyEvent *e){
     QPoint place = control->getPlayer().getPlace();
-    if (e->key()==Qt::Key_D && place.x()<680){
+    if (e->key()==Qt::Key_Right && place.x()<680){
         place.setX(place.x()+25);
         if (place.x()>680){
             place.setX(680);
         }
         control->setPlayerEndPlace(place);
     }
-    if (e->key()==Qt::Key_S && place.x()>20){
+    if (e->key()==Qt::Key_Left && place.x()>20){
         place.setX(place.x()-25);
         if (place.x()<20){
             place.setX(20);
         }
         control->setPlayerEndPlace(place);
     }
-    if (e->key()==Qt::Key_E){
-        if (control->getTime()%100 == 0){ // time limit for shots???
+    if (e->key()==Qt::Key_Space && !e->isAutoRepeat()){
+        if (time % 2== 0){
             Shot shot;
             shot.setOwner(false);
             shot.setPlace(place);
@@ -222,6 +271,7 @@ void GamePlay::keyPressEvent(QKeyEvent *e){
             m_player->play();
         }
     }
+
 }
 
 void GamePlay::on_pushButton_2_clicked()
@@ -229,9 +279,11 @@ void GamePlay::on_pushButton_2_clicked()
     if (pause == false){
         timer->stop();
         pause = true;
+        gPause->show();
     } else{
         timer->start();
         pause = false;
+        gPause->close();
     }
 }
 

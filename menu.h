@@ -29,5 +29,6 @@ private:
     // второе и третье окна
     GamePlay *gWindow;
     GameDesighn *dWindow;
+    void keyPressEvent(QKeyEvent *);
 };
 #endif // MENU_H

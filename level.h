@@ -21,10 +21,12 @@ public:
     QVector<Monstr> getMonstrs() const{return monstrs_;};
     int getShotPeriod() const{return periodOfShots_;};
     int getMovePeriod() const{return periodOfMove_;};
+    bool getHard(){return hard_;};
 private:
     QVector<Monstr> monstrs_;
     int periodOfShots_;
     int periodOfMove_;
+    bool hard_ = false;
 };
 
 #endif // LEVEL_H

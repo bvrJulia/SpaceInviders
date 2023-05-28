@@ -19,6 +19,9 @@ Menu::Menu(QWidget *parent):
     ui->comboBox->addItem("User level",Qt::AlignCenter);
     connect(gWindow, &GamePlay::firstWindow, this, &Menu::show);
     connect(dWindow, &GameDesighn::firstWindow, this, &Menu::show);
+    connect(ui->pushButton_3, SIGNAL(clicked()), qApp, SLOT(quit()));
+    setWindowFlags(Qt::FramelessWindowHint);
+    setFocusPolicy(Qt::NoFocus);
 }
 
 Menu::~Menu()
@@ -53,3 +56,8 @@ void Menu::on_pushButton_2_clicked()
     this->close();
 }
 
+void Menu::keyPressEvent(QKeyEvent *e){
+    if(e->key()==Qt::Key_E){
+        qApp->quit();
+    }
+}
